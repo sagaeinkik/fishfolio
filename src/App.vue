@@ -1,6 +1,7 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router';
 import Banner from "./components/Banner.vue";
+import Footer from "./components/Footer.vue"; 
 
 </script>
 
@@ -9,13 +10,13 @@ import Banner from "./components/Banner.vue";
     <main>
         <RouterView />
     </main>
+    <Footer/>
 </template>
 
 <style scoped>
 main {
     width: 60%; 
     margin: auto; 
-    border: 1px solid white; 
     padding: 1em;
 }
 </style>

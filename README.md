@@ -1,29 +1,25 @@
-# fishfolio
+# Fishfolio
 
-This template should help get you started developing with Vue 3 in Vite.
+av Saga Einarsdotter Kikajon (sa2301) för kursen Fullstacks-utveckling med Ramverk på Mittuniversitetet 2024.
 
-## Recommended IDE Setup
+## Bakgrund
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+I tidigare moment skapade jag ett Rest-API med Laravel som ramverk. Efter extremt mycket om och men lyckades jag publicera det till Railway.  
+API:et handlar om fiskar och används för att registrera fångster.
 
-## Customize configuration
+I detta moment skulle vi skapa en SPA med hjälp av Vue, som konsumerar API:et från föregående moment.
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+## Bra att veta
 
-## Project Setup
+API:et är kopplat till en PostgreSQL-databas som ligger på Render (gratis). API:et i sig är publicerat på Railway (gratis). Detta medför att API:et är väldigt långsamt. Man kan radera data, och detta uppdaterar vyn, men det tar flera sekunder – jag vet inte om detta beror på mig eller om det är för att jag använder gratisversionerna av plattformernas tjänster.
 
-```sh
-npm install
-```
+Jag valde också att använda Composition API för att det på något vis kändes lite mer välbekant, mer som en vanlig js-fil än att arbeta rakt på objektet.
 
-### Compile and Hot-Reload for Development
+### Kraven
 
-```sh
-npm run dev
-```
+Enligt uppgiftsbeskrivningen ska props, emits, reaktiv-data och two way-binding användas. För att bespara er mödan med att gräva runt i alla mina komponenter:
 
-### Compile and Minify for Production
-
-```sh
-npm run build
-```
+-   Props har jag använt i `components/Catch.vue` för att ta emot och definiera fish som ett objekt när det skickas från `components/CatchListing.vue`.
+-   Emits använder jag från `components/Catch.vue` till `components/CatchListing.vue` i form av en händelsehanterare (click) som anropar en funktion i Catchlisting som gör ett DELETE-anrop till API:et och uppdaterar listan.
+-   Reaktiv data använder jag faktiskt lite här och där, bland annat i `components/CatchView.vue` för att visa/dölja formuläret.
+-   Two way-binding använder jag i `components/AddCatch.vue` för att visa användaren hur många texten hen har kvar att skriva i kommentarsfältet.
