@@ -19,7 +19,7 @@ import AddCatch from "../components/AddCatch.vue";
 import { ref } from "vue";
 
 //Ska formulär visas? 
-const showForm = ref(true);
+const showForm = ref(false);
 //Har en fisk lagts till?
 const catchListingRef = ref(null);
 

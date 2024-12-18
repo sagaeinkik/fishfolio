@@ -1,10 +1,12 @@
 <template>
     <form @submit.prevent="handleSubmit">
         <h3>Registrera ny fångst</h3>
-        <ul v-if="errorArray.length > 0" class="error">
-                <li v-for="(error, index) in errorArray" :key="index"> {{ error }} </li>
+        <ul v-if="backendErrors.length > 0" class="error">
+                <li v-for="(error, index) in backendErrors" :key="index"> {{ error }} </li>
         </ul>
-        <p v-if="errMsg" class="error">{{ errMsg }}</p>
+        <ul v-if="frontendErrors.length > 0" class="error">
+                <li v-for="(error, index) in frontendErrors" :key="index"> {{ error }} </li>
+        </ul>
 
         <!-- ART -->
         <div class="form-ctrl">
@@ -61,7 +63,14 @@
         </div>
 
         <!-- SKICKA IN -->
-        <input type="submit" value="Lägg till">
+        <button>
+            <template v-if="!addInProgress">
+                    Lägg till
+                </template>
+                <template v-else>
+                    <div class="loader"></div>Lägger till...
+                </template>
+        </button>
     </form>
 </template>
 
@@ -84,72 +93,135 @@ const form = ref({
 //Kommentarvärde
 const comment = ref(form.comment);
 //felmeddelanden
-let errorArray = ref([]); //Från backend
-let errMsg = ref("");
+let backendErrors = ref([]); 
+let frontendErrors = ref([]); 
+let addInProgress = ref(false);
 
 //Räkna längden på comment-strängen
 const commentLength = computed(() => {
     return 500 - (form.value.comment?.length);
 })
 
-//Validering av input: 
 
+/* ---FUNKTIONER---- */
+
+//Validering av input: 
+const validateInput = () => {
+    //Se till att tömma felmeddelanden
+    frontendErrors.value = []
+
+    //Hämta fältvärdena
+    const { species, lengthInCm, weightInGrams, released, caughtWith, comment } = form.value;
+
+    //Kontroller
+    if(!species || species.trim().length === 0) {
+        frontendErrors.value.push("Du måste fylla i art.");
+    }
+
+    if(lengthInCm !== null && lengthInCm < 0) {
+        frontendErrors.value.push("Längden kan ej vara negativ.");
+    }
+
+    if(weightInGrams !== null && weightInGrams < 0) {
+        frontendErrors.value.push("Vikten kan ej vara negativ.");
+    }
+
+    if(!caughtWith || caughtWith.trim().length === 0) {
+        frontendErrors.value.push("Du måste ange hur du fångade fisken."); 
+    }
+
+    if(comment && comment.length > 500) {
+        frontendErrors.value.push("Din kommentar får inte vara mer än 500 tecken."); 
+    }
+
+    //Returnera bool baserat på om det finns error
+    return frontendErrors.value.length === 0;
+}
+
+
+/* FORMULÄRHANTERING */
+const formReset = () => {
+    form.value = {
+        species: '', 
+        lengthInCm: null,
+        weightInGrams: null,
+        released: false,
+        caughtWith: '', 
+        comment: ''
+    };
+    backendErrors.value = [];
+    frontendErrors.value = [];
+}
 
 //Submit
 const handleSubmit = async() => {
-    //Nytt objekt
-    let newFish = {
-        species: form.value.species, 
-        lengthInCm: form.value.lengthInCm, 
-        weightInGrams: form.value.weightInGrams, 
-        released: form.value.released, 
-        caughtWith: form.value.caughtWith, 
-        comment: form.value.comment
+    addInProgress.value = true; 
+    //Validera
+    if(!validateInput()) {
+        //Slå av loadern
+        addInProgress.value = false; 
+        //Avbryt allt
+        return; 
     }
 
-    console.log(newFish);
+    //Skapa ny fisk
+    let newFish = {
+        species: form.value.species, 
+        released: form.value.released, 
+        caughtWith: form.value.caughtWith, 
+    }
+
+    if(form.value.lengthInCm) {
+        newFish.lengthInCm = form.value.lengthInCm;
+    }
+    if(form.value.weightInGrams) {
+        newFish.weightInGrams = form.value.weightInGrams;
+    }
+    if(form.value.comment) {
+        newFish.comment = form.value.comment;
+    }
+
+    //Anropa POST-funktion med nya fisken
+    let success = await postFish(newFish);
+
+
+    //Om PostFish returnerar true, nollställ formulär och gör emit till förälder för att uppdatera vyn
+    if(success) {
+        formReset();
+        emit("fishAdded");
+    }
+}
+
+//API-ANROP
+const postFish = async(fish) => {
     try {
         const response = await fetch("https://fishapi.up.railway.app/api/fish", {
             method: "POST", 
             headers: {
                 "Accept": "application/json", 
                 "Content-Type": "application/json"
-            }, 
-            body: JSON.stringify(newFish)
-        })
+            },
+            body: JSON.stringify(fish)
+        });
+        const data = await response.json();
 
-        const data = await response.json(); 
-        if (!response.ok) {
-           
-           //Kolla om det är 422 (felaktigt ifyllda fält)
-            if (response.status === 422) {
-                 // Formatera och spara felmeddelandena
-                errorArray.value = Object.values(data.errors).flat();
-                console.log(errorArray.value);
+        //Något gick dåligt:
+        if(!response.ok) {
+            //Kolla 422 dvs felaktig inmatning
+            if(response.status === 422) {
+                backendErrors.value = Object.values(data.errors).flat(); 
+                return false; 
             } else {
-
-                //Annars är det något annat fel; ge error
-                throw new Error(`HTTP error! status: ${response.status}`);
+                throw new Error("HTTP error, status " + response.status);
             }
-        } else {
-
-            //Nollställ formuläret
-            form.value = {
-                species: '', 
-                lengthInCm: null,
-                weightInGrams: null,
-                released: false,
-                caughtWith: '', 
-                comment: ''
-            };
-
-            //Uppdatera vyn: 
-            //Emit till CatchView som sen skickar ner till CatchListing
-            emit("fishAdded"); 
         }
+        return true; 
     } catch (error) {
-        errMsg.value = error;
-        console.log("Det gick inte att lägga till objekt: " + error); 
+        backendErrors.value = ["Något gick fel vid anropet: " + error.message];
+        console.error("Fel vid post-anrop:" + error);
+        return false; 
+    } finally {
+        addInProgress.value = false;
     }
 }
 </script>
@@ -255,5 +327,40 @@ form {
             color: v.$pinkred;
         }
     }
+}
+
+//submit
+button {
+    background-color: v.$yellow;
+    color: v.$darkblue;
+
+    //LOADER
+    .loader {
+        display: inline-block;
+        border: 0.4em solid v.$darkblue; 
+        border-top: 0.3em solid v.$yellow;
+        border-radius: 50%;
+        width: 1.2em;
+        height: 1.2em;
+        animation: spin 1.4s linear infinite;
+        margin-right: 0.8em;
+    }
+
+    &:hover {
+        background-color: v.$orange;
+        color: white;
+
+        .loader {
+            border-top: 0.3em solid v.$orange;
+        }
+    }
+}
+
+/* KEYFRAMES  */
+
+//Loader
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 </style>
