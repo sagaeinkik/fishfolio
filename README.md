@@ -15,6 +15,8 @@ API:et är kopplat till en PostgreSQL-databas som ligger på Render (gratis). AP
 
 Jag valde också att använda Composition API för att det på något vis kändes lite mer välbekant, mer som en vanlig js-fil än att arbeta rakt på objektet.
 
+Jag har valt att inte implementera funktionalitet för att uppdateera poster i just denna laboration, men API:et har stöd för PUT-anrop och använder samma valideringsregler som vid POST.
+
 ### Kraven
 
 Enligt uppgiftsbeskrivningen ska props, emits, reaktiv-data och two way-binding användas. För att bespara er mödan med att gräva runt i alla mina komponenter:
