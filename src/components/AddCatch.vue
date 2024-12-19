@@ -11,7 +11,7 @@
         <!-- ART -->
         <div class="form-ctrl">
         <label for="species">Art: <span class="req">*</span></label>
-        <input type="text" name="species" id="species" v-model="form.species">
+        <input type="text" name="species" id="species" v-model="form.species" required>
         </div>
 
         <!-- LÄNGD -->
