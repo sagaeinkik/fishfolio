@@ -22,4 +22,4 @@ Enligt uppgiftsbeskrivningen ska props, emits, reaktiv-data och two way-binding 
 -   Props har jag använt i `components/Catch.vue` för att ta emot och definiera fish som ett objekt när det skickas från `components/CatchListing.vue`.
 -   Emits använder jag från `components/Catch.vue` till `components/CatchListing.vue` i form av en händelsehanterare (click) som anropar en funktion i Catchlisting som gör ett DELETE-anrop till API:et och uppdaterar listan.
 -   Reaktiv data använder jag faktiskt lite här och där, bland annat i `components/CatchView.vue` för att visa/dölja formuläret.
--   Two way-binding använder jag i `components/AddCatch.vue` för att visa användaren hur många texten hen har kvar att skriva i kommentarsfältet.
+-   Two way-binding använder jag i `components/AddCatch.vue` för att visa användaren hur många texten hen har kvar att skriva i kommentarsfältet. Det används också i formuläret i samma fil, men inte för att uppdatera vyn.
