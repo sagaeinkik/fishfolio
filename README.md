@@ -11,7 +11,7 @@ I detta moment skulle vi skapa en SPA med hjälp av Vue, som konsumerar API:et f
 
 ## Bra att veta
 
-API:et är kopplat till en PostgreSQL-databas som ligger på Render (gratis). API:et i sig är publicerat på Railway (gratis). Detta medför att API:et är väldigt långsamt. Man kan radera data, och detta uppdaterar vyn, men det tar flera sekunder – jag vet inte om detta beror på mig eller om det är för att jag använder gratisversionerna av plattformernas tjänster.
+API:et är kopplat till en PostgreSQL-databas som ligger på Render (gratis). API:et i sig är publicerat på Railway (gratis). Detta medför att API:et är väldigt långsamt. Att hämta, lägga till och uppdatera fungerar, men det tar flera sekunder – jag vet inte om detta beror på mig eller om det är för att jag använder gratisversionerna av plattformernas tjänster. Jag har försökt lägga till så många indikationer som möjligt på att webbtjänsten arbetar, men det finns ett litet glapp mellan att en loader slutar snurra och att vyn uppdateras. Jag beklagar detta.
 
 Jag valde också att använda Composition API för att det på något vis kändes lite mer välbekant, mer som en vanlig js-fil än att arbeta rakt på objektet.
 

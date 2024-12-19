@@ -102,23 +102,24 @@ defineExpose({
    }
 }
 
-.loader {
-  border: 0.5em solid v.$orange; 
-  border-top: 0.5em solid v.$darkblue;
-  border-radius: 50%;
-  width: 2em;
-  height: 2em;
-  animation: spin 1.4s linear infinite;
-  margin: 2em 0 1em; 
-}
-/* KEYFRAMES  */
 
 //Loader
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+.loader {
+  border: 0.5em solid v.$pinkred; 
+  border-top: 0.5em solid v.$darkblue;
+  width: 2em;
+  height: 2em;
+  margin: 2em 0 1em; 
 }
 
+//Meddelande
+.message {
+    margin-top: 1em; 
+    text-align: center; 
+}
+
+
+/* KEYFRAMES  */
 //Skriv-effekt
 @keyframes typing {
   from { width: 0 }
@@ -131,9 +132,5 @@ defineExpose({
   50% { border-color: v.$orange; }
 }
 
-//Meddelande
-.message {
-    margin-top: 1em; 
-    text-align: center; 
-}
+
 </style>

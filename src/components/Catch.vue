@@ -79,6 +79,7 @@ article {
 //Flex
 .flex-cntnr {
     display: flex; 
+    gap: 1em;
     justify-content: space-between;
 
     a {
@@ -105,17 +106,9 @@ article {
 .loader {
   border: 0.3em solid v.$orange; 
   border-top: 0.3em solid v.$darkblue;
-  border-radius: 50%;
   width: 1em;
   height: 1em;
-  animation: spin 1.4s linear infinite;
   margin: 0.2em 0; 
 }
-/* KEYFRAMES  */
 
-//Loader
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
 </style>

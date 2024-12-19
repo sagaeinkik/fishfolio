@@ -68,4 +68,30 @@ nav {
         }
     }
 }
+
+/* MEDIA QUERIES */
+@media (max-width: 1020px) {
+    nav {
+        width: 90%;
+    }
+}
+
+@media (max-width: 600px) {
+    //Minska luften runt nav
+    nav {
+        margin: 2em auto; 
+        width: 98%; 
+        padding: 0.7em;
+    }
+    //Bredda menyns yta
+    li {
+        width: 95%;
+
+        //Ta bort texten, visa bara ikonerna
+        a span {
+            display: none;
+
+        }
+    }
+}
 </style>

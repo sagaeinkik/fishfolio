@@ -50,7 +50,7 @@
                 <i class="fa-regular fa-circle-question"></i>
                 <span class="tooltip-text">Redskap (t ex haspelspö), metod (t ex trolling) och/eller bete (t ex skeddrag). Upp till 64 tecken.</span>
             </span>
-            <input type="text" name="caughtWith" id="caughtWith" v-model="form.caughtWith">
+            <input type="text" name="caughtWith" id="caughtWith" v-model="form.caughtWith" required>
         </div>
 
         <!-- KOMMENTAR -->
@@ -221,6 +221,7 @@ const postFish = async(fish) => {
         console.error("Fel vid post-anrop:" + error);
         return false; 
     } finally {
+        //Slå om loader-switchen
         addInProgress.value = false;
     }
 }
@@ -339,28 +340,31 @@ button {
         display: inline-block;
         border: 0.4em solid v.$darkblue; 
         border-top: 0.3em solid v.$yellow;
-        border-radius: 50%;
         width: 1.2em;
         height: 1.2em;
-        animation: spin 1.4s linear infinite;
         margin-right: 0.8em;
     }
 
     &:hover {
-        background-color: v.$orange;
+        background-color: v.$pinkred;
         color: white;
 
         .loader {
-            border-top: 0.3em solid v.$orange;
+            border-top: 0.3em solid v.$pinkred;
         }
     }
 }
 
-/* KEYFRAMES  */
+/* MEDIA QUERIES */
+@media (max-width: 1300px) {
+    form {
+        width: 80%; 
+    }
+}
 
-//Loader
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+@media (max-width: 520px) {
+    form {
+        width: 100%;
+    }
 }
 </style>

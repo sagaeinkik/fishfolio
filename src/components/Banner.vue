@@ -49,4 +49,50 @@ img {
     width: 70%;
     justify-self: center;
 }
+
+
+/* MEDIA QUERIES */
+@media (max-width: 1020px) {
+    //Bredda hero
+    .hero-area {
+        width: 90%;
+    }
+    //Minska text
+    .text-area .spa-name {
+        font-size: 3em;
+    }
+}
+
+@media (max-width: 700px) {
+    .text-area .spa-name {
+        font-size: 2.5em;
+    }
+}
+
+@media(max-width: 570px) {
+    .hero-area {
+        grid-template-columns: 1fr; 
+        grid-template-areas: "img" "info"; 
+
+        img {
+            grid-area: img;
+            width: 9em; 
+        }
+
+        .text-area {
+            grid-area: info;
+            justify-items: center;
+        }
+    }
+}
+
+@media (max-width: 300px) {
+    .text-area .spa-name {
+        font-size: 2em;
+    }
+    .hero-area img {
+        width: 7em;
+    }
+}
+
 </style>

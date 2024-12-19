@@ -10,6 +10,7 @@ const router = createRouter({
             path: '/',
             name: 'start',
             component: HomeView,
+            alias: '/start',
         },
         {
             path: '/catches',
@@ -20,6 +21,11 @@ const router = createRouter({
             path: '/about',
             name: 'about',
             component: AboutView,
+        },
+        {
+            path: '/:pathMatch(.*)*',
+            name: 'not found',
+            redirect: '/start',
         },
     ],
 });
